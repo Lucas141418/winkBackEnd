@@ -1,0 +1,35 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: lucas141418
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: winkBackEnd
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  httpApi:
+    id: fav0g62zf9
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:867344436828:table/Users
+        - arn:aws:dynamodb:us-east-1:867344436828:table/UserTransactions
+
+functions:
+  getUserInfoById:
+    handler: src/services/getUserInfoById.getUserInfoById
+    events:
+      - httpApi:
+          path: /getUserInfoById/{userId}
+          method: get
+
+          
+  getUserTransactions:
+    handler: src/services/getUserTransactions.getUserTransactions
+    events:
+      - httpApi:
+          path: /getUserTransactions/{userId}
+          method: get
+  
