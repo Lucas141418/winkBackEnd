@@ -32,4 +32,12 @@ functions:
       - httpApi:
           path: /getUserTransactions/{userId}
           method: get
+
+  
+  getTransactionById:
+    handler: src/services/getTransactionById.getTransactionById
+    events:
+      - httpApi:
+          path: /getTransactionById/{userId}/{transactionId}
+          method: get
   

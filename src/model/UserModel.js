@@ -14,21 +14,35 @@ class UserModel {
     return resultUser.Item;
   }
 
-  static async getTransactionsModel({ userId, limit,  lastEvaluatedKey  }) {
-    const resTransaction = await dynamoDB.query({
-      TableName: "UserTransactions",
-      KeyConditionExpression:  "userId = :userId",
-      ExpressionAttributeValues: {":userId": userId},
-      Limit: limit,
-      ExclusiveStartKey: lastEvaluatedKey ? JSON.stringify(lastEvaluatedKey) :  undefined,
-      ScanIndexForward: false
-    })
-    .promise()
+  static async getTransactionsModel({ userId, limit, lastEvaluatedKey }) {
+    const resTransaction = await dynamoDB
+      .query({
+        TableName: "UserTransactions",
+        KeyConditionExpression: "userId = :userId",
+        ExpressionAttributeValues: { ":userId": userId },
+        Limit: limit,
+        ExclusiveStartKey: lastEvaluatedKey
+          ? JSON.stringify(lastEvaluatedKey)
+          : undefined,
+        ScanIndexForward: false,
+      })
+      .promise();
 
     return {
       item: resTransaction.Items,
-      lastEvaluatedKey: resTransaction.LastEvaluatedKey || undefined
-    }
+      lastEvaluatedKey: resTransaction.LastEvaluatedKey || undefined,
+    };
+  }
+
+  static async getTransactionByIdModel({ userId,transactionId }) {
+    const resTransaction = await dynamoDB
+      .query({
+        TableName: "UserTransactions",
+        KeyConditionExpression: "userId = :userId and transactionId = :transactionId",
+        ExpressionAttributeValues: { ":userId": userId, ":transactionId": transactionId }
+      })
+      .promise();
+      return resTransaction.Items[0]
   }
 }
 

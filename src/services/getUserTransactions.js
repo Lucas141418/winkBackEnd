@@ -1,8 +1,6 @@
 const { UserModel } = require("../model/UserModel");
 const { createResponse } = require("../utils");
 
-
-
 const getUserTransactions = async (e) => {
   const { userId } = e.pathParameters;
   const { limit = 10, lastEvaluatedKey } = e.queryStringParameters || {};
@@ -13,7 +11,8 @@ const getUserTransactions = async (e) => {
       limit: parseInt(limit),
       lastEvaluatedKey,
     });
-    if (!userTransactions) return createResponse(404, { message: "The transactions doesn't exit" });
+    if (!userTransactions)
+      return createResponse(404, { message: "The transactions doesn't exit" });
     const body = {
       transactions: userTransactions.item,
       lastEvaluatedKey: userTransactions.lastEvaluatedKey
@@ -21,13 +20,12 @@ const getUserTransactions = async (e) => {
         : undefined,
     };
 
-
     return createResponse(200, body);
   } catch (error) {
-    console.log(error)
-    return createResponse(500, {error: "Failed to fetch the user"})
+    console.log(error);
+    return createResponse(500, { error: "Failed to fetch the user" });
   }
 };
 module.exports = {
   getUserTransactions,
-}
+};
