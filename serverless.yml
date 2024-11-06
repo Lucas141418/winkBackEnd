@@ -25,11 +25,24 @@ functions:
           path: /getUserInfoById/{userId}
           method: get
 
-          
   getUserTransactions:
     handler: src/services/getUserTransactions.getUserTransactions
     events:
       - httpApi:
           path: /getUserTransactions/{userId}
           method: get
-  
+
+  getTransactionById:
+    handler: src/services/getTransactionById.getTransactionById
+    events:
+      - httpApi:
+          path: /getTransactionById/{userId}/{transactionId}
+          method: get
+
+  createTransaction:
+    handler: src/services/createTransaction.createTransaction
+    events:
+      - httpApi:
+          path: /createTransaction
+          method: post
+
