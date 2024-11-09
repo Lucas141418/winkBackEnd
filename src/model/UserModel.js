@@ -21,9 +21,7 @@ class UserModel {
         KeyConditionExpression: "userId = :userId",
         ExpressionAttributeValues: { ":userId": userId },
         Limit: parseInt(limit),
-        ExclusiveStartKey: lastEvaluatedKey
-          ? JSON.stringify(lastEvaluatedKey)
-          : undefined,
+        ExclusiveStartKey: lastEvaluatedKey || undefined, 
         ScanIndexForward: false,
       })
       .promise();

@@ -5,11 +5,20 @@ const getUserTransactions = async (e) => {
   const { userId } = e.pathParameters;
   const { limit = 10, lastEvaluatedKey } = e.queryStringParameters || {};
 
+  let parsedKey;
+  if(lastEvaluatedKey) {
+    try {
+      parsedKey = JSON.parse(lastEvaluatedKey);
+    } catch (error) {
+      return createResponse(400, { message: "Invalid lastEvaluatedKey" });
+    }
+  }
+
   try {
     const userTransactions = await UserModel.getTransactionsModel({
       userId,
       limit: parseInt(limit),
-      lastEvaluatedKey,
+      lastEvaluatedKey: parsedKey,
     });
     if (!userTransactions)
       return createResponse(404, { message: "The transactions doesn't exit" });
