@@ -6,7 +6,9 @@ const { transactionValidation } = require("../schemas/transaction");
 const createTransaction = async (e) => {
   const transactionId = crypto.randomUUID();
   const date = new Date();
-  const timeTransaction = date.toLocaleString();
+  const timeTransaction = date.toLocaleString("es-CR", {
+    timeZone: "America/Costa_Rica",
+  });
 
   const {
     detailsTransaction,
@@ -40,20 +42,20 @@ const createTransaction = async (e) => {
       return createResponse(404, {
         message: "Error Creating the transaction",
       });
-    
+
     const { updatedBalance } = await UserModel.updateBalanceModel({
       userId,
-      amountTransaction: parseFloat(amount)
-    })
-
-    if(!updatedBalance) return createResponse(404, {
-      message: "Error updating the balance",
+      amountTransaction: parseFloat(amount),
     });
 
+    if (!updatedBalance)
+      return createResponse(404, {
+        message: "Error updating the balance",
+      });
 
     return createResponse(201, {
       message: "Transaction created succesfully",
-      data: {...data, ...updatedBalance}
+      data: { ...data, ...updatedBalance },
     });
   } catch (err) {
     console.error(err);
